@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Makiato Coffee | Modern Espresso Bar</title>
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0b0b0b;
+            color: #f3ede8;
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1e1a16;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #c7a45b;
+            border-radius: 12px;
+        }
+
+        .grain-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJmIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iLjY1IiBudW1PY3RhdmVzPSIzIiAvPjwvZmlsdGVyPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbHRlcj0idXJsKCNmKSIgb3BhY2l0eT0iMC4wNiIgLz48L3N2Zz4=');
+            opacity: 0.2;
+            z-index: 9999;
+        }
+
+        .bg-glow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 30%, rgba(199, 164, 91, 0.08), rgba(0,0,0,0.95));
+            z-index: -2;
+        }
+
+        .bg-gradient-dynamic {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(125deg, #0c0a09 0%, #1f1914 100%);
+            z-index: -3;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 24px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero {
+            min-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            gap: 1.8rem;
+            padding: 2rem 0;
+            border-bottom: 1px solid rgba(199, 164, 91, 0.25);
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3rem, 10vw, 5.8rem);
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, #E9D5A7, #b88b4a);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            animation: fadeUp 1s ease-out;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: #cfba8c;
+            animation: fadeUp 1s ease-out 0.1s both;
+        }
+
+        .hero .tagline {
+            font-size: 1rem;
+            font-weight: 300;
+            max-width: 600px;
+            color: #bcae8a;
+            animation: fadeUp 1s ease-out 0.2s both;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 10px;
+            animation: fadeUp 1s ease-out 0.3s both;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border-radius: 60px;
+            font-weight: 600;
+            transition: 0.25s ease;
+            text-decoration: none;
+            background: rgba(199, 164, 91, 0.12);
+            border: 1px solid rgba(199, 164, 91, 0.5);
+            color: #f0e0bc;
+        }
+
+        .btn-primary {
+            background: #c7a45b;
+            border: none;
+            color: #0c0a09;
+            box-shadow: 0 8px 20px rgba(199,164,91,0.2);
+        }
+
+        .btn-primary:hover {
+            background: #dfbe7a;
+            transform: scale(1.02);
+            box-shadow: 0 12px 26px rgba(199,164,91,0.3);
+        }
+
+        .btn-outline:hover {
+            background: rgba(199, 164, 91, 0.25);
+            border-color: #c7a45b;
+            transform: translateY(-3px);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-family: 'Playfair Display', serif;
+            margin: 4rem 0 2rem;
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .section-title span {
+            background: linear-gradient(120deg, #e7cd92, #b88742);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .section-title:after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 2px;
+            background: #c7a45b;
+            margin: 12px auto 0;
+            border-radius: 4px;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 28px;
+            margin: 40px 0;
+        }
+
+        .card {
+            background: rgba(22, 20, 17, 0.7);
+            backdrop-filter: blur(8px);
+            border-radius: 32px;
+            padding: 24px 20px;
+            transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            border: 1px solid rgba(199, 164, 91, 0.2);
+            box-shadow: 0 10px 20px -5px rgba(0,0,0,0.5);
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(199, 164, 91, 0.6);
+            background: rgba(28, 24, 20, 0.85);
+            box-shadow: 0 18px 30px -8px black;
+        }
+
+        .card h3 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #f0ddb0;
+            margin-bottom: 20px;
+            border-left: 4px solid #c7a45b;
+            padding-left: 16px;
+        }
+
+        .menu-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            padding: 12px 0;
+            border-bottom: 1px dashed rgba(199,164,91,0.3);
+            font-weight: 400;
+            font-size: 1rem;
+        }
+
+        .item-name {
+            font-weight: 500;
+            letter-spacing: -0.2px;
+        }
+
+        .item-desc {
+            font-size: 0.75rem;
+            color: #b89f6e;
+            margin-top: 4px;
+        }
+
+        .price {
+            font-weight: 600;
+            color: #e6c48b;
+            font-size: 1.05rem;
+        }
+
+        .size-row {
+            font-size: 0.75rem;
+            color: #cfbc93;
+            margin-top: 4px;
+            display: flex;
+            gap: 12px;
+        }
+
+        hr {
+            margin: 20px 0;
+            border-color: #2d261d;
+        }
+
+        .gallery-showcase {
+            display: flex;
+            gap: 24px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 60px 0 40px;
+        }
+
+        .img-card {
+            background: #1e1a14;
+            border-radius: 28px;
+            overflow: hidden;
+            width: 260px;
+            transition: all 0.35s;
+            border: 1px solid rgba(199,164,91,0.3);
+        }
+
+        .img-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 20px 30px -12px black;
+            border-color: #b88742;
+        }
+
+        .img-placeholder {
+            height: 200px;
+            background: linear-gradient(145deg, #30271e, #18130e);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: #c7a45b;
+        }
+
+        .img-card p {
+            padding: 14px;
+            text-align: center;
+            font-weight: 500;
+            background: #0e0c09;
+        }
+
+        .contact-bar {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 32px;
+            margin: 40px 0 20px;
+            padding: 20px 0;
+            border-top: 1px solid rgba(199,164,91,0.2);
+            border-bottom: 1px solid rgba(199,164,91,0.2);
+        }
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1rem;
+            background: rgba(0,0,0,0.4);
+            padding: 8px 18px;
+            border-radius: 80px;
+            transition: 0.2s;
+        }
+        .contact-item i {
+            font-size: 1.3rem;
+            color: #c7a45b;
+        }
+        .contact-item a {
+            color: #f3ede8;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .contact-item a:hover {
+            color: #c7a45b;
+            text-decoration: underline;
+        }
+
+        footer {
+            margin-top: 70px;
+            padding: 32px 0;
+            text-align: center;
+            border-top: 1px solid rgba(199,164,91,0.2);
+            color: #a5916e;
+            font-size: 0.8rem;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 780px) {
+            .container {
+                padding: 0 20px;
+            }
+            .card h3 {
+                font-size: 1.5rem;
+            }
+            .contact-bar {
+                gap: 16px;
+            }
+            .contact-item {
+                font-size: 0.85rem;
+                padding: 6px 12px;
+            }
+        }
+        .signature {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            text-align: center;
+            margin-top: 20px;
+            color: #ba9553;
+        }
+    </style>
+</head>
+<body>
+<div class="bg-gradient-dynamic"></div>
+<div class="bg-glow"></div>
+<div class="grain-overlay"></div>
+
+<div class="container">
+    <div class="hero">
+        <h1>MAKIATO <span style="font-weight: 300;">COFFEE</span></h1>
+        <p>MODERN ESPRESSO BAR</p>
+        <div class="tagline">• аромат, который вдохновляет • смесь традиций и современности •</div>
+        <div class="btn-group">
+            <a href="#menu-coffee" class="btn btn-primary"><i class="fas fa-mug-hot"></i> Смотреть меню</a>
+            <a href="#special" class="btn btn-outline"><i class="fas fa-cocktail"></i> Лимонады & Милкшейки</a>
+        </div>
+    </div>
+
+    <!-- КОНТАКТЫ: адрес, телефон, инстаграм -->
+    <div class="contact-bar">
+        <div class="contact-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>Жамбыла Жабаева 159</span>
+        </div>
+        <div class="contact-item">
+            <i class="fas fa-phone-alt"></i>
+            <a href="tel:87080097445">8 (708) 009-74-45</a>
+        </div>
+        <div class="contact-item">
+            <i class="fab fa-instagram"></i>
+            <a href="https://instagram.com/makiatocoffee.03" target="_blank" rel="noopener noreferrer">@makiatocoffee.03</a>
+        </div>
+    </div>
+
+    <div class="gallery-showcase">
+        <div class="img-card">
+            <div class="img-placeholder"><i class="fas fa-mug-saucer"></i> ☕</div>
+            <p>Эспрессо-бар Makiato</p>
+        </div>
+        <div class="img-card">
+            <div class="img-placeholder"><i class="fas fa-glass-cheers"></i> 🍹</div>
+            <p>Лимонады 400 мл</p>
+        </div>
+        <div class="img-card">
+            <div class="img-placeholder"><i class="fas fa-blender"></i> 🥤</div>
+            <p>Милкшейки Орео / Клубника</p>
+        </div>
+    </div>
+
+    <div id="menu-coffee">
+        <div class="section-title"><span>КОФЕЙНАЯ КАРТА</span></div>
+        <div class="menu-grid">
+            <div class="card">
+                <h3><i class="fas fa-heart" style="font-size: 1.3rem; color:#c7a45b;"></i> КЛАССИКА</h3>
+                <div class="menu-item"><span class="item-name">ДОППИО (алюминий эспрессо)</span><span class="price">690 тг</span></div>
+                <div class="menu-item"><span class="item-name">ФЛЭТ-УАЙТ</span><span class="price">890 тг</span></div>
+                <div class="item-desc">эспрессо, молоко · 250 мл</div>
+                <div class="menu-item"><span class="item-name">АМЕРИКАНО</span><span class="price">890 тг</span></div>
+                <div class="item-desc">эспрессо, вода · 250 мл</div>
+                <div class="menu-item"><span class="item-name">КАПУЧИНО</span><span class="price">890 тг</span></div>
+                <div class="item-desc">эспрессо, молоко, молочная пенка · 350 мл</div>
+                <div class="menu-item"><span class="item-name">ЛАТТЕ</span><span class="price">450 тг</span></div>
+                <div class="item-desc">эспрессо, молоко · 350 мл</div>
+                <div class="menu-item"><span class="item-name">+ РАФ</span><span class="price">450 тг</span></div>
+                <div class="item-desc">эспрессо, сливки, ванильный сироп · 350 мл</div>
+            </div>
+
+            <div class="card">
+                <h3><i class="fas fa-snowflake"></i> ICE COFFEE</h3>
+                <div class="menu-item"><span class="item-name">АЙС АМЕРИКАНО</span><span class="price">890 тг</span></div>
+                <div class="item-desc">эспрессо, вода, лёд · 300 мл</div>
+                <div class="menu-item"><span class="item-name">АЙС ЛАТТЕ</span>
+                    <div><span class="price">990 тг / 1190 тг</span></div>
+                </div>
+                <div class="size-row">300 мл / 400 мл · эспрессо, молоко, лёд, сироп</div>
+                <div class="menu-item"><span class="item-name">АЙС КАПУЧИНО</span>
+                    <div><span class="price">990 тг / 1190 тг</span></div>
+                </div>
+                <div class="size-row">300 мл / 400 мл · эспрессо, молоко, лёд, сироп</div>
+                <hr>
+                <div class="menu-item"><span class="item-name">☕ КАКАО (настроение)</span><span class="price">590 тг / 690 тг / 790 тг</span></div>
+                <div class="item-desc">какао, молоко, сахар · 250 / 350 / 450 мл</div>
+                <div class="menu-item"><span class="item-name">🍯 ДОБАВКИ: СИРОПЫ</span><span class="price">100 тг / 150 тг</span></div>
+                <div class="size-row">20 мл / 30 мл · ваниль, карамель, лесной орех</div>
+            </div>
+
+            <div class="card">
+                <h3><i class="fas fa-seedling"></i> АВТОРСКИЕ МИКСЫ</h3>
+                <div class="menu-item"><span class="item-name">ЭСПРЕССО РУЧНОЙ ОБЖАРКИ</span><span class="price">490 тг</span></div>
+                <div class="item-desc">богатое тело, ноты тёмного шоколада</div>
+                <div class="menu-item"><span class="item-name">МАККИАТО КАРАМЕЛЬ</span><span class="price">590 тг</span></div>
+                <div class="item-desc">эспрессо, молочная пена, соус dulce</div>
+                <div class="signature"><i class="fas fa-certificate"></i> signature blend</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="special">
+        <div class="section-title"><span>ЛИМОНАДЫ & МИЛКШЕЙКИ</span></div>
+        <div class="menu-grid">
+            <div class="card">
+                <h3><i class="fas fa-lemon"></i> ЛИМОНАД · 400 мл</h3>
+                <div class="menu-item"><span class="item-name">🍃 Мохито</span><span class="price">1190 тг</span></div>
+                <div class="menu-item"><span class="item-name">🥝 Киви-яблоко</span><span class="price">1190 тг</span></div>
+                <div class="menu-item"><span class="item-name">🥭 Манго-маракуя</span><span class="price">1190 тг</span></div>
+                <div class="menu-item"><span class="item-name">🍋 Лайм-кола</span><span class="price">1190 тг</span></div>
+                <div class="item-desc" style="margin-top: 12px;">освежающие, handmade, лёд и мята</div>
+            </div>
+
+            <div class="card">
+                <h3><i class="fas fa-ice-cream"></i> МИЛКШЕЙК · 400 мл</h3>
+                <div class="menu-item"><span class="item-name">🍦 Ванильный</span><span class="price">1390 тг</span></div>
+                <div class="menu-item"><span class="item-name">🍪 Орео</span><span class="price">1590 тг</span></div>
+                <div class="menu-item"><span class="item-name">🍓 Клубничный</span><span class="price">1590 тг</span></div>
+                <div class="menu-item"><span class="item-name">☕ Кофейный (эспрессо + мороженое)</span><span class="price">1590 тг</span></div>
+                <div class="item-desc">натуральное мороженое, взбитые сливки по желанию</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Блок "ОЩУТИ ПРЕИМУЩЕСТВО" оставлен, но без премиум-предложений и сиропов -->
+    <div class="section-title"><span>ОЩУТИ ПРЕИМУЩЕСТВО</span></div>
+    <div class="menu-grid" style="margin-bottom: 20px;">
+        <div class="card" style="text-align: center;">
+            <i class="fas fa-seedling" style="font-size: 2.5rem; color:#c7a45b;"></i>
+            <h3 style="margin: 15px 0;">Зерна Direct Trade</h3>
+            <p>100% арабика высокогорья, свежая обжарка каждые 5 дней.</p>
+        </div>
+        <div class="card" style="text-align: center;">
+            <i class="fas fa-tachometer-alt" style="font-size: 2.5rem; color:#c7a45b;"></i>
+            <h3 style="margin: 15px 0;">Быстрый ритуал</h3>
+            <p>Эспрессо-машина La Marzocco | приготовление за 90 секунд.</p>
+        </div>
+        <div class="card" style="text-align: center;">
+            <i class="fas fa-magic" style="font-size: 2.5rem; color:#c7a45b;"></i>
+            <h3 style="margin: 15px 0;">Атмосфера современного бара</h3>
+            <p>Интерьер, музыка, свет — каждая деталь для твоего кофе.</p>
+        </div>
+    </div>
+
+    <footer>
+        <p><i class="fas fa-heart" style="color:#c7a45b;"></i> Спасибо, что выбираете нас <i class="fas fa-heart" style="color:#c7a45b;"></i></p>
+        <p style="margin-top: 12px;">MAKIATO COFFEE | Modern Espresso Bar | Ежедневно 8:00–22:00</p>
+        <p class="signature" style="font-size: 0.75rem;">«Кофе — это искусство, доступное каждому»</p>
+        <div style="margin-top: 20px;">
+            <i class="fab fa-instagram"></i>  <i class="fab fa-telegram"></i>  <i class="fab fa-whatsapp"></i>
+        </div>
+    </footer>
+</div>
+
+<script>
+    const cards = document.querySelectorAll('.card');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, { threshold: 0.1 });
+    cards.forEach(card => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+        observer.observe(card);
+    });
+    const imgCards = document.querySelectorAll('.img-card');
+    imgCards.forEach(imgc => {
+        imgc.style.opacity = '0';
+        imgc.style.transform = 'translateY(15px)';
+        imgc.style.transition = 'opacity 0.6s ease 0.1s, transform 0.5s';
+        observer.observe(imgc);
+    });
+</script>
+</body>
+</html>
